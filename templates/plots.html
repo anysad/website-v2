@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Data Visualization</title>
+    <script>
+        function showPlot() {
+            var selectedPlot = document.getElementById("plotSelector").value;
+            var plots = document.getElementsByClassName("plot-image");
+
+            for (var i = 0; i < plots.length; i++) {
+                plots[i].style.display = "none"; // Hide all plots
+            }
+
+            document.getElementById(selectedPlot).style.display = "block"; // Show selected plot
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Studentu datu vizualizācija</h1>
+        {% if no_data %}
+            <p>No data available. Please upload a CSV file.</p>
+        {% else %}
+            <label for="plotSelector">Izvēlēties vizualizāciju:</label>
+            <select id="plotSelector" onchange="showPlot()">
+                <option value="histogram">Grade Distribution</option>
+                <option value="scatter">Study Hours vs. Grade</option>
+                <option value="boxplot">Grade Distribution by Subject</option>
+                <option value="bar_chart">Average Grade per Subject</option>
+            </select>
+
+            <div class="content">
+                <!-- Image display -->
+                <div class="plot-container">
+                    <img id="histogram" class="plot-image" src="{{ url_for('static', filename='plots/histogram.png') }}" alt="Grade Distribution" style="display:block;">
+                    <img id="scatter" class="plot-image" src="{{ url_for('static', filename='plots/scatter.png') }}" alt="Study Hours vs. Grade" style="display:none;">
+                    <img id="boxplot" class="plot-image" src="{{ url_for('static', filename='plots/boxplot.png') }}" alt="Grade Distribution by Subject" style="display:none;">
+                    <img id="bar_chart" class="plot-image" src="{{ url_for('static', filename='plots/bar_chart.png') }}" alt="Average Grade per Subject" style="display:none;">
+                </div>
+
+                <!-- Best Students Table -->
+                <div class="table-container">
+                    <h2>5 labākie skolēni pēc vertējumiem</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Vārds</th>
+                                <th>Vertējums</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in top_students %}
+                                <tr>
+                                    <td>{{ student.name }}</td>
+                                    <td>{{ student.grade }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+        <a href="{{ url_for('home') }}">Atpakaļ uz sākumlapu</a>
+    </div>
+</body>
+</html>
