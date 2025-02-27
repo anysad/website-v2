@@ -22,7 +22,7 @@
     <div class="container">
         <h1>Studentu datu vizualizācija</h1>
         {% if no_data %}
-            <p>No data available. Please upload a CSV file.</p>
+            <p>Vizualizācijai nav pieejami dati. Lūdzu, <a href="{{ url_for('upload') }}">augšupielādējiet CSV failu</a>.</p>
         {% else %}
             <label for="plotSelector">Izvēlēties vizualizāciju:</label>
             <select id="plotSelector" onchange="showPlot()">
