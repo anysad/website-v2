@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>Data Visualization</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Datu vizualizācija</title>
     <script>
         function showPlot() {
             var selectedPlot = document.getElementById("plotSelector").value;
@@ -22,7 +22,7 @@
     <div class="container">
         <h1>Studentu datu vizualizācija</h1>
         {% if no_data %}
-            <p>No data available. Please upload a CSV file.</p>
+            <p>Nav datu. Augšupielādējiet CSV failu.</p>
         {% else %}
             <label for="plotSelector">Izvēlēties vizualizāciju:</label>
             <select id="plotSelector" onchange="showPlot()">
@@ -35,10 +35,10 @@
             <div class="content">
                 <!-- Image display -->
                 <div class="plot-container">
-                    <img id="histogram" class="plot-image" src="{{ url_for('static', filename='plots/histogram.png') }}" alt="Grade Distribution" style="display:block;">
-                    <img id="scatter" class="plot-image" src="{{ url_for('static', filename='plots/scatter.png') }}" alt="Study Hours vs. Grade" style="display:none;">
-                    <img id="boxplot" class="plot-image" src="{{ url_for('static', filename='plots/boxplot.png') }}" alt="Grade Distribution by Subject" style="display:none;">
-                    <img id="bar_chart" class="plot-image" src="{{ url_for('static', filename='plots/bar_chart.png') }}" alt="Average Grade per Subject" style="display:none;">
+                    <img id="histogram" class="plot-image" src="../static/plots/histogram.png" alt="Grade Distribution" style="display:block;">
+                    <img id="scatter" class="plot-image" src="../static/plots/scatter.png" alt="Study Hours vs. Grade" style="display:none;">
+                    <img id="boxplot" class="plot-image" src="../static/plots/boxplot.png" alt="Grade Distribution by Subject" style="display:none;">
+                    <img id="bar_chart" class="plot-image" src="../static/plots/bar_chart.png" alt="Average Grade per Subject" style="display:none;">
                 </div>
 
                 <!-- Best Students Table -->
@@ -63,7 +63,7 @@
                 </div>
             </div>
         {% endif %}
-        <a href="{{ url_for('home') }}">Atpakaļ uz sākumlapu</a>
+        <a href="/">Atpakaļ uz sākumlapu</a>
     </div>
 </body>
 </html>
