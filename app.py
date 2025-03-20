@@ -46,7 +46,7 @@ def plots():
     # mācību stundas vs. atzīme
     plt.figure()
     plt.scatter(df["hours_per_week"], df["grade"], c="blue", alpha=0.5)
-    plt.title("Macību stundas pret atzīmes")
+    plt.title("Macību stundas pret atzīmem")
     plt.xlabel("Stundas nedēļā")
     plt.ylabel("Atzīme")
     plt.savefig("static/plots/scatter.png")
@@ -80,7 +80,7 @@ def plots():
 def upload():
     if request.method == "POST":
         file = request.files["file"]
-        if file and file.filename.endswith(".csv"):
+        if file:
             df = pd.read_csv(file)
             Students.delete().execute()
             for _, row in df.iterrows():
