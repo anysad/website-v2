@@ -21,48 +21,44 @@
 <body>
     <div class="container">
         <h1>Studentu datu vizualizācija</h1>
-        {% if no_data %}
-            <p>Vizualizācijai nav pieejami dati. Lūdzu, <a href="{{ url_for('upload') }}">augšupielādējiet CSV failu</a>.</p>
-        {% else %}
-            <label for="plotSelector">Izvēlēties vizualizāciju:</label>
-            <select id="plotSelector" onchange="showPlot()">
-                <option value="histogram">Grade Distribution</option>
-                <option value="scatter">Study Hours vs. Grade</option>
-                <option value="boxplot">Grade Distribution by Subject</option>
-                <option value="bar_chart">Average Grade per Subject</option>
-            </select>
+        
+        <label for="plotSelector">Izvēlēties vizualizāciju:</label>
+        <select id="plotSelector" onchange="showPlot()">
+            <option value="histogram">Grade Distribution</option>
+            <option value="scatter">Study Hours vs. Grade</option>
+            <option value="boxplot">Grade Distribution by Subject</option>
+            <option value="bar_chart">Average Grade per Subject</option>
+        </select>
 
-            <div class="content">
-                <!-- Image display -->
-                <div class="plot-container">
-                    <img id="histogram" class="plot-image" src="../static/plots/histogram.png" alt="Grade Distribution" style="display:block;">
-                    <img id="scatter" class="plot-image" src="../static/plots/scatter.png" alt="Study Hours vs. Grade" style="display:none;">
-                    <img id="boxplot" class="plot-image" src="../static/plots/boxplot.png" alt="Grade Distribution by Subject" style="display:none;">
-                    <img id="bar_chart" class="plot-image" src="../static/plots/bar_chart.png" alt="Average Grade per Subject" style="display:none;">
-                </div>
-
-                <!-- Best Students Table -->
-                <div class="table-container">
-                    <h2>5 labākie skolēni pēc vertējumiem</h2>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Vārds</th>
-                                <th>Vertējums</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for student in top_students %}
-                                <tr>
-                                    <td>{{ student.name }}</td>
-                                    <td>{{ student.grade }}</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        <div class="content">
+            <div class="plot-container">
+                <img id="histogram" class="plot-image" src="../static/plots/histogram.png" alt="Grade Distribution" style="display:block;">
+                <img id="scatter" class="plot-image" src="../static/plots/scatter.png" alt="Study Hours vs. Grade" style="display:none;">
+                <img id="boxplot" class="plot-image" src="../static/plots/boxplot.png" alt="Grade Distribution by Subject" style="display:none;">
+                <img id="bar_chart" class="plot-image" src="../static/plots/bar_chart.png" alt="Average Grade per Subject" style="display:none;">
             </div>
-        {% endif %}
+
+            <div class="table-container">
+                <h2>5 labākie skolēni pēc vertējumiem</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Vārds</th>
+                            <th>Vertējums</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in top_students %}
+                            <tr>
+                                <td>{{ student.name }}</td>
+                                <td>{{ student.grade }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <a href="/">Atpakaļ uz sākumlapu</a>
     </div>
 </body>

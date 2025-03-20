@@ -41,7 +41,7 @@ def save_csv_with_dialog():
 
     if file_path:
         students = generate_students()
-        with open(file_path, 'w', newline='') as file:
+        with open(file_path, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(["name", "age", "subject", "grade", "hours_per_week"])
             writer.writerows(students)
