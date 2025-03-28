@@ -5,9 +5,7 @@ import matplotlib.pyplot as plt
 from peewee import *
 
 app = Flask(__name__)
-matplotlib.use("Agg")
-
-db = SqliteDatabase("students.db")
+dbinfo = SqliteDatabase("students.db")
 
 class Students(Model):
     name = CharField()
@@ -17,26 +15,28 @@ class Students(Model):
     hours_per_week = IntegerField()
 
     class Meta:
-        database = db
+        database = dbinfo
 
-db.connect()
-db.create_tables([Students])
+dbinfo.connect()
+dbinfo.create_tables([Students])
 
 @app.route("/")
 def home():
     return render_template("home.html")
 
+matplotlib.use("Agg")
 @app.route("/plots", methods=["GET", "POST"])
 def plots():
     students = Students.select()
+    # ja nav info -> upload
     if not students:
         return redirect(url_for("upload"))
     
-    df = pd.DataFrame([s.__data__ for s in students])
+    info = pd.DataFrame([s.__data__ for s in students])
 
     # atzīmju sadalījums
     plt.figure()
-    plt.hist(df["grade"], bins=10, edgecolor="black", alpha=0.7)
+    plt.hist(info["grade"], bins=10, edgecolor="black", alpha=0.7)
     plt.title("Atzīmju sadalījums")
     plt.xlabel("Atzīme")
     plt.ylabel("Biežums")
@@ -45,7 +45,7 @@ def plots():
     
     # mācību stundas vs. atzīme
     plt.figure()
-    plt.scatter(df["hours_per_week"], df["grade"], c="blue", alpha=0.5)
+    plt.scatter(info["hours_per_week"], info["grade"], c="blue", alpha=0.5)
     plt.title("Macību stundas pret atzīmem")
     plt.xlabel("Stundas nedēļā")
     plt.ylabel("Atzīme")
@@ -54,7 +54,7 @@ def plots():
     
     # atzīmju sadalījums pēc priekšmeta
     plt.figure()
-    df.boxplot(column="grade", by="subject", grid=False)
+    info.boxplot(column="grade", by="subject", grid=False)
     plt.title("Atzīmju sadalījums pēc priekšmeta")
     plt.xlabel("Priekšmets")
     plt.ylabel("Atzīme")
@@ -64,7 +64,7 @@ def plots():
     
     # vidējais vērtējums par priekšmetu
     plt.figure()
-    df.groupby("subject")["grade"].mean().plot(kind="bar", color="green", edgecolor="black")
+    info.groupby("subject")["grade"].mean().plot(kind="bar", color="green", edgecolor="black")
     plt.title("Vidējais vērtējums par priekšmetu")
     plt.xlabel("Priekšmets")
     plt.ylabel("Vidējais vērtējums")
@@ -80,10 +80,12 @@ def plots():
 def upload():
     if request.method == "POST":
         file = request.files["file"]
+        # ja ir fails tad sakt informacijas pievienosanu
         if file:
-            df = pd.read_csv(file)
+            info = pd.read_csv(file)
             Students.delete().execute()
-            for _, row in df.iterrows():
+            for _, row in info.iterrows():
+                # pievienot informaciju datubaze!!!
                 Students.create(
                     name = row["name"],
                     age = row["age"],
@@ -95,4 +97,5 @@ def upload():
     return render_template("upload.html")
 
 if __name__ == "__main__":
+    # sakt aplikaciju
     app.run(debug=True, use_reloader=False)
